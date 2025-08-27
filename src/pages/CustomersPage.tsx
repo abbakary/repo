@@ -224,6 +224,16 @@ export default function CustomersPage() {
                       <SelectItem value="bodaboda">Bodaboda</SelectItem>
                     </SelectContent>
                   </Select>
+                  <Select value={serviceTypeFilter} onValueChange={setServiceTypeFilter}>
+                    <SelectTrigger className="w-48">
+                      <SelectValue placeholder="Service Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Services</SelectItem>
+                      <SelectItem value="tire_sales">Tire Sales</SelectItem>
+                      <SelectItem value="car_service">Car Service</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Button variant="outline">
                     <Filter className="h-4 w-4 mr-2" />
                     More Filters
