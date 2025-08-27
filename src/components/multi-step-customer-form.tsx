@@ -51,9 +51,6 @@ interface InquiryDetails {
 export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCustomerFormProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [savedCustomerId, setSavedCustomerId] = useState<string | null>(null)
-  const [showExistingCustomerSearch, setShowExistingCustomerSearch] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedExistingCustomer, setSelectedExistingCustomer] = useState<any>(null)
 
   const [customerData, setCustomerData] = useState({
     name: customer?.name || "",
