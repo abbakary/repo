@@ -777,34 +777,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                       </div>
 
                       <div>
-                        <Label>Vehicle to Service</Label>
-                        {vehicles.length > 0 ? (
-                          <Select
-                            value={carService.vehicle_id || ""}
-                            onValueChange={(value) => handleCarServiceChange("vehicle_id", value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a vehicle" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {vehicles.map((vehicle, index) => (
-                                <SelectItem 
-                                  key={index} 
-                                  value={vehicle.plate_number || `vehicle-${index}`}
-                                >
-                                  {vehicle.plate_number} ({vehicle.make} {vehicle.model})
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">
-                            Please add a vehicle first
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
                         <Label>Problem Description</Label>
                         <Textarea
                           value={carService.problem_description}
