@@ -281,11 +281,11 @@ export default function CustomersPage() {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-[12%] hidden md:table-cell">Vehicle</TableHead>
-                        <TableHead className="w-[25%]">Customer</TableHead>
+                        <TableHead className="w-[20%]">Customer</TableHead>
                         <TableHead className="w-[15%] hidden md:table-cell">Type</TableHead>
-                        <TableHead className="w-[8%] hidden lg:table-cell">Vehicles</TableHead>
+                        <TableHead className="w-[25%] hidden lg:table-cell">Recent Service</TableHead>
                         <TableHead className="w-[8%] hidden lg:table-cell">Visits</TableHead>
-                        <TableHead className="w-[32%]">Actions</TableHead>
+                        <TableHead className="w-[20%]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -335,10 +335,32 @@ export default function CustomersPage() {
                             </Badge>
                           </TableCell>
                           <TableCell className="hidden lg:table-cell">
-                            <div className="flex items-center gap-1">
-                              <Car className="h-4 w-4 text-muted-foreground" />
-                              <span className="text-sm">{customer.vehicles.length}</span>
-                            </div>
+                            {customer.recent_orders && customer.recent_orders.length > 0 && (
+                              <div className="space-y-1">
+                                <div className="text-sm font-medium">
+                                  {customer.recent_orders[0].service_type === "tire_sales" ? "🛞 Tire Sales" : "🔧 Car Service"}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {customer.recent_orders[0].items.join(", ")}
+                                </div>
+                                {customer.recent_orders[0].brand && (
+                                  <div className="text-xs text-muted-foreground">
+                                    Brand: {customer.recent_orders[0].brand}
+                                  </div>
+                                )}
+                                {customer.recent_orders[0].vehicle && (
+                                  <div className="text-xs text-muted-foreground">
+                                    {customer.recent_orders[0].vehicle}
+                                  </div>
+                                )}
+                                <Badge
+                                  variant={customer.recent_orders[0].status === "completed" ? "default" : "secondary"}
+                                  className="text-xs"
+                                >
+                                  {customer.recent_orders[0].status}
+                                </Badge>
+                              </div>
+                            )}
                           </TableCell>
                           <TableCell className="hidden lg:table-cell">{customer.total_visits}</TableCell>
                           <TableCell>
