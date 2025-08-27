@@ -20,8 +20,6 @@ interface Vehicle {
   plate_number: string
   make: string
   model: string
-  year: string
-  color: string
   vehicle_type: string
 }
 
@@ -77,8 +75,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
       plate_number: "",
       make: "",
       model: "",
-      year: "",
-      color: "",
       vehicle_type: "",
     },
   ])
@@ -158,8 +154,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         plate_number: "",
         make: "",
         model: "",
-        year: "",
-        color: "",
         vehicle_type: "",
       },
     ])
