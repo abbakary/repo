@@ -938,12 +938,11 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                               <p className="font-medium">Tire Details:</p>
                               <ul className="list-disc list-inside ml-4">
                                 <li>
-                                  Size: {tireService.tire_size}, Brand: {tireService.tire_brand}
+                                  Item: {tireService.item_name}, Brand: {tireService.brand}
                                 </li>
                                 <li>
                                   Quantity: {tireService.quantity}, Type: {tireService.tire_type}
                                 </li>
-                                <li>Price/Tire: ${tireService.price_per_tire}</li>
                               </ul>
                             </div>
                           )}
