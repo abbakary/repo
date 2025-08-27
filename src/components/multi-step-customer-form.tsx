@@ -624,23 +624,7 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <Label>Year</Label>
-                              <Input
-                                value={vehicle.year}
-                                onChange={(e) => handleVehicleChange(index, "year", e.target.value)}
-                                placeholder="2020"
-                              />
-                            </div>
-                            <div>
-                              <Label>Color</Label>
-                              <Input
-                                value={vehicle.color}
-                                onChange={(e) => handleVehicleChange(index, "color", e.target.value)}
-                                placeholder="White"
-                              />
-                            </div>
+                          <div className="grid grid-cols-1 gap-4">
                             <div>
                               <Label>Vehicle Type</Label>
                               <Select
