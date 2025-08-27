@@ -26,11 +26,10 @@ interface Vehicle {
 }
 
 interface TireService {
-  tire_size: string
-  tire_brand: string
+  item_name: string
+  brand: string
   quantity: number
   tire_type: string
-  price_per_tire: number
 }
 
 interface CarService {
@@ -86,11 +85,10 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
 
   // Service Details
   const [tireService, setTireService] = useState<TireService>({
-    tire_size: "",
-    tire_brand: "",
+    item_name: "",
+    brand: "",
     quantity: 1,
     tire_type: "",
-    price_per_tire: 0,
   })
 
   const [carService, setCarService] = useState<CarService>({
