@@ -79,10 +79,6 @@ export interface Order {
   description?: string
   estimated_completion?: string
   actual_completion?: string
-  total_amount: number
-  discount_amount: number
-  tax_amount: number
-  final_amount: number
   created_by: number
   assigned_to?: number
   created_at: string
@@ -119,19 +115,10 @@ export interface Invoice {
   invoice_number: string
   job_card_id: number
   customer_id: number
-  status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
-  subtotal: number
-  tax_rate: number
-  tax_amount: number
-  discount_amount: number
-  total_amount: number
-  paid_amount: number
-  balance_due: number
+  status: "draft" | "sent" | "completed" | "cancelled"
   invoice_date: string
   due_date: string
-  paid_date?: string
-  payment_method?: string
-  payment_reference?: string
+  completion_date?: string
   generated_by: number
   created_at: string
   updated_at: string
@@ -144,7 +131,6 @@ export interface InventoryItem {
   name: string
   brand?: string
   description?: string
-  unit_price: number
   quantity_in_stock: number
   minimum_stock_level: number
   is_active: boolean
