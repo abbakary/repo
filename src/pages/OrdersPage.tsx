@@ -152,10 +152,10 @@ export default function OrdersPage() {
       order.id === updatedOrder.id ? updatedOrder : order
     ))
     
-    // If order is completed, trigger job card and invoice generation
-    if (updatedOrder.status === "completed" && selectedOrder?.status !== "completed") {
-      generateJobCardAndInvoice(updatedOrder)
-    }
+    // Job card and invoice generation temporarily disabled
+    // if (updatedOrder.status === "completed" && selectedOrder?.status !== "completed") {
+    //   generateJobCardAndInvoice(updatedOrder)
+    // }
     
     setShowOrderUpdate(false)
     setSelectedOrder(null)

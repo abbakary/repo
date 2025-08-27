@@ -22,8 +22,9 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<CustomersPage />} />
           <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/job-cards" element={<JobCardsPage />} />
-          <Route path="/invoices" element={<InvoicesPage />} />
+          {/* Job Cards and Invoices temporarily disabled */}
+          {/* <Route path="/job-cards" element={<JobCardsPage />} /> */}
+          {/* <Route path="/invoices" element={<InvoicesPage />} /> */}
           <Route path="/inquiries" element={<InquiriesPage />} />
           <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/time-tracking" element={<TimeTrackingPage />} />

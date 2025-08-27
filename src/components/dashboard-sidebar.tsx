@@ -55,21 +55,9 @@ const getNavigationItems = (userType: string) => {
       roles: ["admin", "office_manager"],
     },
     {
-      title: "Job Cards & Tracking",
-      href: "/job-cards",
-      icon: Wrench,
-      roles: ["admin", "office_manager"],
-    },
-    {
       title: "Time Tracking",
       href: "/time-tracking",
       icon: Car,
-      roles: ["admin", "office_manager"],
-    },
-    {
-      title: "Invoices & Payments",
-      href: "/invoices",
-      icon: FileText,
       roles: ["admin", "office_manager"],
     },
     {
