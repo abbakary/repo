@@ -12,7 +12,7 @@ import { Plus, Search, Filter, Eye, Edit, Phone, Mail, Car, Wrench } from "lucid
 import { CustomerForm } from "../components/customer-form"
 import { CustomerDetails } from "../components/customer-details"
 
-// Mock data for demonstration
+// Mock data for demonstration with recent orders and service type information
 const mockCustomers = [
   {
     id: 1,
@@ -22,10 +22,21 @@ const mockCustomers = [
     phone: "+255 712 345 678",
     email: "john.mwalimu@gmail.com",
     total_visits: 5,
-    total_spent: 450000,
+    total_spent: 0,
     last_visit: "2024-01-15",
     vehicles: [{ plate_number: "T123ABC", make: "Toyota", model: "Corolla" }],
     is_active: true,
+    recent_service_type: "car_service",
+    recent_orders: [
+      {
+        id: 1,
+        service_type: "car_service",
+        items: ["Oil Change", "Brake Repair"],
+        status: "completed",
+        date: "2024-01-15",
+        vehicle: "T123ABC - Toyota Corolla"
+      }
+    ]
   },
   {
     id: 2,
@@ -35,13 +46,24 @@ const mockCustomers = [
     phone: "+255 22 211 1111",
     email: "fleet@tra.go.tz",
     total_visits: 12,
-    total_spent: 2800000,
+    total_spent: 0,
     last_visit: "2024-01-20",
     vehicles: [
       { plate_number: "GVT001", make: "Toyota", model: "Land Cruiser" },
       { plate_number: "GVT002", make: "Nissan", model: "Patrol" },
     ],
     is_active: true,
+    recent_service_type: "car_service",
+    recent_orders: [
+      {
+        id: 2,
+        service_type: "car_service",
+        items: ["Engine Diagnostics", "Brake Repair"],
+        status: "in_progress",
+        date: "2024-01-20",
+        vehicle: "GVT001 - Toyota Land Cruiser"
+      }
+    ]
   },
   {
     id: 3,
@@ -51,10 +73,22 @@ const mockCustomers = [
     phone: "+255 754 987 654",
     email: "",
     total_visits: 8,
-    total_spent: 180000,
+    total_spent: 0,
     last_visit: "2024-01-18",
     vehicles: [{ plate_number: "MC456DEF", make: "Bajaj", model: "Boxer" }],
     is_active: true,
+    recent_service_type: "tire_sales",
+    recent_orders: [
+      {
+        id: 3,
+        service_type: "tire_sales",
+        items: ["All-Season Tire"],
+        brand: "Michelin",
+        quantity: 2,
+        status: "completed",
+        date: "2024-01-18"
+      }
+    ]
   },
 ]
 
