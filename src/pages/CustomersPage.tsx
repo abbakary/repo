@@ -264,8 +264,8 @@ export default function CustomersPage() {
               </Card>
               <Card>
                 <CardContent className="p-4">
-                  <div className="text-2xl font-bold text-blue-600">TSH 12.5M</div>
-                  <p className="text-sm text-muted-foreground">Total Revenue</p>
+                  <div className="text-2xl font-bold text-blue-600">89%</div>
+                  <p className="text-sm text-muted-foreground">Satisfaction Rate</p>
                 </CardContent>
               </Card>
             </div>
