@@ -220,7 +220,7 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
       return
     }
 
-    if (serviceType === "tire_sales" && (!tireService.tire_size || !tireService.tire_brand)) {
+    if (serviceType === "tire_sales" && (!tireService.item_name || !tireService.brand)) {
       alert("Please fill in tire service details")
       return
     }
