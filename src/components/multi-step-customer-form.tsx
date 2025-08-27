@@ -115,34 +115,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
     { id: 4, title: "Details & Review", icon: FileText },
   ]
 
-  const existingCustomers = [
-    { id: 1, name: "John Doe", phone: "+255 123 456 789", customer_type: "personal", last_visit: "2024-01-15" },
-    { id: 2, name: "ABC Company Ltd", phone: "+255 987 654 321", customer_type: "private", last_visit: "2024-01-10" },
-    {
-      id: 3,
-      name: "Ministry of Health",
-      phone: "+255 555 123 456",
-      customer_type: "government",
-      last_visit: "2024-01-08",
-    },
-  ]
-
-  const filteredCustomers = existingCustomers.filter(
-    (customer) =>
-      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) || customer.phone.includes(searchQuery),
-  )
-
-  const selectExistingCustomer = (customer: any) => {
-    setSelectedExistingCustomer(customer)
-    setCustomerData({
-      name: customer.name,
-      phone: customer.phone,
-      email: customer.email || "",
-      address: customer.address || "",
-      notes: customer.notes || "",
-    })
-    setShowExistingCustomerSearch(false)
-  }
 
   const saveCurrentStep = () => {
     const stepData = {
