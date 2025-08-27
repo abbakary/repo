@@ -32,6 +32,10 @@ export interface Customer {
   created_by: number
   created_at: string
   updated_at: string
+  // Time tracking fields
+  arrival_time?: string
+  departure_time?: string
+  current_visit_status?: "arrived" | "in_service" | "completed" | "departed"
 }
 
 export interface Vehicle {
@@ -83,6 +87,21 @@ export interface Order {
   assigned_to?: number
   created_at: string
   updated_at: string
+  // Time tracking for the order
+  service_start_time?: string
+  service_end_time?: string
+  // Service type specific details
+  service_details?: {
+    service_type: "tire_sales" | "car_service"
+    items?: string[]
+    brand?: string
+    quantity?: number
+    vehicle_info?: {
+      plate_number: string
+      make: string
+      model: string
+    }
+  }
 }
 
 export interface JobCard {
