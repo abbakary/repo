@@ -239,6 +239,9 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         is_active: true,
         total_visits: 0,
         total_spent: 0,
+        // Automatic time tracking - customer arrival
+        arrival_time: new Date().toISOString(),
+        current_visit_status: "arrived",
       },
       order: serviceIntent === "service" ? {
         id: `ORD-${Date.now()}`,
@@ -254,9 +257,20 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         estimated_completion: serviceType === "car_service"
           ? new Date(Date.now() + carService.estimated_duration * 60000).toISOString()
           : null,
-        total_amount: 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
+        service_start_time: new Date().toISOString(),
+        service_details: {
+          service_type: serviceType,
+          items: serviceType === "tire_sales" ? [tireService.item_name] : carService.service_types,
+          brand: serviceType === "tire_sales" ? tireService.brand : undefined,
+          quantity: serviceType === "tire_sales" ? tireService.quantity : undefined,
+          vehicle_info: serviceType === "car_service" && vehicles.length > 0 ? {
+            plate_number: vehicles[0].plate_number,
+            make: vehicles[0].make,
+            model: vehicles[0].model
+          } : undefined
+        }
       } : null,
       service_details: {
         service_intent: serviceIntent,
