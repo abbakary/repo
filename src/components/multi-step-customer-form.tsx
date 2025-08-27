@@ -675,20 +675,47 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label>Tire Size *</Label>
-                          <Input
-                            value={tireService.tire_size}
-                            onChange={(e) => handleTireServiceChange("tire_size", e.target.value)}
-                            placeholder="e.g., 205/55R16"
-                          />
+                          <Label>Item Name *</Label>
+                          <Select
+                            value={tireService.item_name}
+                            onValueChange={(value) => handleTireServiceChange("item_name", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select tire item" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="All-Season Tire">All-Season Tire</SelectItem>
+                              <SelectItem value="Summer Tire">Summer Tire</SelectItem>
+                              <SelectItem value="Winter Tire">Winter Tire</SelectItem>
+                              <SelectItem value="Performance Tire">Performance Tire</SelectItem>
+                              <SelectItem value="Off-Road Tire">Off-Road Tire</SelectItem>
+                              <SelectItem value="Eco Tire">Eco Tire</SelectItem>
+                              <SelectItem value="Run-Flat Tire">Run-Flat Tire</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                         <div>
-                          <Label>Tire Brand *</Label>
-                          <Input
-                            value={tireService.tire_brand}
-                            onChange={(e) => handleTireServiceChange("tire_brand", e.target.value)}
-                            placeholder="e.g., Michelin, Pirelli"
-                          />
+                          <Label>Brand *</Label>
+                          <Select
+                            value={tireService.brand}
+                            onValueChange={(value) => handleTireServiceChange("brand", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select brand" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Michelin">Michelin</SelectItem>
+                              <SelectItem value="Bridgestone">Bridgestone</SelectItem>
+                              <SelectItem value="Continental">Continental</SelectItem>
+                              <SelectItem value="Pirelli">Pirelli</SelectItem>
+                              <SelectItem value="Goodyear">Goodyear</SelectItem>
+                              <SelectItem value="Dunlop">Dunlop</SelectItem>
+                              <SelectItem value="Yokohama">Yokohama</SelectItem>
+                              <SelectItem value="Hankook">Hankook</SelectItem>
+                              <SelectItem value="Toyo">Toyo</SelectItem>
+                              <SelectItem value="Kumho">Kumho</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -717,15 +744,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                             </SelectContent>
                           </Select>
                         </div>
-                      </div>
-                      <div>
-                        <Label>Price per Tire</Label>
-                        <Input
-                          type="number"
-                          value={tireService.price_per_tire}
-                          onChange={(e) => handleTireServiceChange("price_per_tire", parseFloat(e.target.value))}
-                          placeholder="0.00"
-                        />
                       </div>
                     </CardContent>
                   </Card>
