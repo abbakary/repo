@@ -103,6 +103,7 @@ const customerTypeColors = {
 export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedType, setSelectedType] = useState("all")
+  const [serviceTypeFilter, setServiceTypeFilter] = useState("all")
   const [showCustomerForm, setShowCustomerForm] = useState(false)
   const [selectedCustomer, setSelectedCustomer] = useState(null)
   const [showCustomerDetails, setShowCustomerDetails] = useState(false)
@@ -114,7 +115,8 @@ export default function CustomersPage() {
       customer.customer_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       customer.phone.includes(searchTerm)
     const matchesType = selectedType === "all" || customer.customer_type === selectedType
-    return matchesSearch && matchesType
+    const matchesServiceType = serviceTypeFilter === "all" || customer.recent_service_type === serviceTypeFilter
+    return matchesSearch && matchesType && matchesServiceType
   })
 
   const handleViewCustomer = (customer: any) => {
