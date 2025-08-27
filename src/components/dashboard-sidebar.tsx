@@ -27,6 +27,7 @@ import {
   Shield,
   Eye,
   HelpCircle,
+  Clock,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -55,9 +56,9 @@ const getNavigationItems = (userType: string) => {
       roles: ["admin", "office_manager"],
     },
     {
-      title: "Time Tracking",
-      href: "/time-tracking",
-      icon: Car,
+      title: "Customer Tracking",
+      href: "/customer-tracking",
+      icon: Clock,
       roles: ["admin", "office_manager"],
     },
     {

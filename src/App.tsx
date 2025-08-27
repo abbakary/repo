@@ -13,6 +13,7 @@ import ReportsPage from './pages/ReportsPage'
 import UserManagementPage from './pages/UserManagementPage'
 import ManagerActivitiesPage from './pages/ManagerActivitiesPage'
 import InquiriesPage from './pages/InquiriesPage'
+import CustomerTrackingPage from './pages/CustomerTrackingPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/customer-tracking" element={<CustomerTrackingPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           {/* Job Cards and Invoices temporarily disabled */}
           {/* <Route path="/job-cards" element={<JobCardsPage />} /> */}
