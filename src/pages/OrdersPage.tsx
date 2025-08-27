@@ -30,10 +30,6 @@ const mockOrders: Order[] = [
     priority: "normal",
     description: "Car service - Oil change and brake inspection",
     estimated_completion: "2024-01-20T16:00:00",
-    total_amount: 85000,
-    discount_amount: 0,
-    tax_amount: 15300,
-    final_amount: 100300,
     created_by: 1,
     assigned_to: 2,
     created_at: "2024-01-20T08:30:00",
@@ -48,10 +44,6 @@ const mockOrders: Order[] = [
     priority: "high",
     description: "Tire sales - 4 Michelin tires 205/55R16",
     estimated_completion: "2024-01-20T14:00:00",
-    total_amount: 320000,
-    discount_amount: 20000,
-    tax_amount: 54000,
-    final_amount: 354000,
     created_by: 1,
     created_at: "2024-01-20T09:00:00",
     updated_at: "2024-01-20T09:00:00",
@@ -65,10 +57,6 @@ const mockOrders: Order[] = [
     priority: "low",
     description: "Inquiry about transmission service pricing",
     actual_completion: "2024-01-19T15:30:00",
-    total_amount: 0,
-    discount_amount: 0,
-    tax_amount: 0,
-    final_amount: 0,
     created_by: 1,
     created_at: "2024-01-19T14:00:00",
     updated_at: "2024-01-19T15:30:00",
@@ -506,9 +494,6 @@ Error details: ${error instanceof Error ? error.message : 'Unknown error'}`)
                                     }
                                   </span>
                                 </div>
-                              </TableCell>
-                              <TableCell className="hidden lg:table-cell">
-                                <div className="text-sm">TSH {order.final_amount.toLocaleString()}</div>
                               </TableCell>
                               <TableCell>
                                 <div className="flex gap-2">
