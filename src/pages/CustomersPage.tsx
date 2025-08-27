@@ -235,14 +235,11 @@ export default function CustomersPage() {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-[12%] hidden md:table-cell">Vehicle</TableHead>
-                        <TableHead className="w-[18%]">Customer</TableHead>
-                        <TableHead className="w-[10%] hidden md:table-cell">Type</TableHead>
-                        <TableHead className="w-[20%]">Contact</TableHead>
+                        <TableHead className="w-[25%]">Customer</TableHead>
+                        <TableHead className="w-[15%] hidden md:table-cell">Type</TableHead>
                         <TableHead className="w-[8%] hidden lg:table-cell">Vehicles</TableHead>
                         <TableHead className="w-[8%] hidden lg:table-cell">Visits</TableHead>
-                        <TableHead className="w-[12%] hidden md:table-cell">Total Spent</TableHead>
-                        <TableHead className="w-[8%] hidden md:table-cell">Last Visit</TableHead>
-                        <TableHead className="w-[12%]">Actions</TableHead>
+                        <TableHead className="w-[32%]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -291,20 +288,6 @@ export default function CustomersPage() {
                               {customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1)}
                             </Badge>
                           </TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-1 text-sm">
-                                <Phone className="h-3 w-3 flex-shrink-0" />
-                                <span className="truncate">{customer.phone}</span>
-                              </div>
-                              {customer.email && (
-                                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                  <Mail className="h-3 w-3 flex-shrink-0" />
-                                  <span className="truncate">{customer.email}</span>
-                                </div>
-                              )}
-                            </div>
-                          </TableCell>
                           <TableCell className="hidden lg:table-cell">
                             <div className="flex items-center gap-1">
                               <Car className="h-4 w-4 text-muted-foreground" />
@@ -312,15 +295,21 @@ export default function CustomersPage() {
                             </div>
                           </TableCell>
                           <TableCell className="hidden lg:table-cell">{customer.total_visits}</TableCell>
-                          <TableCell className="hidden md:table-cell">TSH {customer.total_spent.toLocaleString()}</TableCell>
-                          <TableCell className="hidden md:table-cell">{customer.last_visit}</TableCell>
                           <TableCell>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-wrap">
                               <Button variant="ghost" size="sm" onClick={() => handleViewCustomer(customer)}>
                                 <Eye className="h-4 w-4" />
                               </Button>
                               <Button variant="ghost" size="sm">
                                 <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button variant="outline" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                                <Plus className="h-4 w-4 mr-1" />
+                                Order
+                              </Button>
+                              <Button variant="outline" size="sm">
+                                <Wrench className="h-4 w-4 mr-1" />
+                                Service
                               </Button>
                             </div>
                           </TableCell>
