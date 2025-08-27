@@ -504,70 +504,72 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
           <div className="space-y-6">
             {serviceIntent === "service" && (
               <>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Customer Type</CardTitle>
-                    <CardDescription>This helps us provide better service</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label>Customer Type</Label>
-                      <Select value={customerType} onValueChange={setCustomerType}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select customer type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="government">Government</SelectItem>
-                          <SelectItem value="ngo">NGO</SelectItem>
-                          <SelectItem value="private">Private Company</SelectItem>
-                          <SelectItem value="personal">Personal</SelectItem>
-                          <SelectItem value="bodaboda">Bodaboda</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Business fields for organizational customers */}
-                    {(customerType === "government" || customerType === "ngo" || customerType === "private") && (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label>Organization Name</Label>
-                          <Input
-                            value={businessInfo.business_name}
-                            onChange={(e) => setBusinessInfo({ ...businessInfo, business_name: e.target.value })}
-                            placeholder="Enter organization name"
-                          />
-                        </div>
-                        <div>
-                          <Label>Tax Number</Label>
-                          <Input
-                            value={businessInfo.tax_number}
-                            onChange={(e) => setBusinessInfo({ ...businessInfo, tax_number: e.target.value })}
-                            placeholder="Enter tax number"
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Sub-type selection for personal customers */}
-                    {customerType === "personal" && (
+                {serviceType === "car_service" && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Customer Type</CardTitle>
+                      <CardDescription>This helps us provide better service</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
                       <div>
-                        <Label>Customer Sub-Type</Label>
-                        <Select value={personalSubType} onValueChange={setPersonalSubType}>
+                        <Label>Customer Type</Label>
+                        <Select value={customerType} onValueChange={setCustomerType}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select if you are the owner or driver" />
+                            <SelectValue placeholder="Select customer type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="owner">Owner</SelectItem>
-                            <SelectItem value="driver">Driver</SelectItem>
+                            <SelectItem value="government">Government</SelectItem>
+                            <SelectItem value="ngo">NGO</SelectItem>
+                            <SelectItem value="private">Private Company</SelectItem>
+                            <SelectItem value="personal">Personal</SelectItem>
+                            <SelectItem value="bodaboda">Bodaboda</SelectItem>
                           </SelectContent>
                         </Select>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {personalSubType === "owner" ? "You own the vehicle being serviced" : personalSubType === "driver" ? "You drive but don't own the vehicle" : "Please select your relationship to the vehicle"}
-                        </p>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
+
+                      {/* Business fields for organizational customers */}
+                      {(customerType === "government" || customerType === "ngo" || customerType === "private") && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <Label>Organization Name</Label>
+                            <Input
+                              value={businessInfo.business_name}
+                              onChange={(e) => setBusinessInfo({ ...businessInfo, business_name: e.target.value })}
+                              placeholder="Enter organization name"
+                            />
+                          </div>
+                          <div>
+                            <Label>Tax Number</Label>
+                            <Input
+                              value={businessInfo.tax_number}
+                              onChange={(e) => setBusinessInfo({ ...businessInfo, tax_number: e.target.value })}
+                              placeholder="Enter tax number"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Sub-type selection for personal customers */}
+                      {customerType === "personal" && (
+                        <div>
+                          <Label>Customer Sub-Type</Label>
+                          <Select value={personalSubType} onValueChange={setPersonalSubType}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select if you are the owner or driver" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="owner">Owner</SelectItem>
+                              <SelectItem value="driver">Driver</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {personalSubType === "owner" ? "You own the vehicle being serviced" : personalSubType === "driver" ? "You drive but don't own the vehicle" : "Please select your relationship to the vehicle"}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Vehicle information for car services */}
                 {serviceType === "car_service" && (
