@@ -253,14 +253,14 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         status: "created",
         priority: serviceType === "car_service" ? carService.priority : "normal",
         description: serviceType === "tire_sales"
-          ? `Tire Sales: ${tireService.quantity}x ${tireService.tire_brand} ${tireService.tire_size}`
+          ? `Tire Sales: ${tireService.quantity}x ${tireService.brand} ${tireService.item_name}`
           : serviceType === "car_service"
           ? `Car Service: ${carService.service_types.join(", ")}`
           : "General inquiry",
         estimated_completion: serviceType === "car_service"
           ? new Date(Date.now() + carService.estimated_duration * 60000).toISOString()
           : null,
-        total_amount: serviceType === "tire_sales" ? tireService.quantity * tireService.price_per_tire : 0,
+        total_amount: 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       } : null,
