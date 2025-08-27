@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
-import { Plus, Search, Filter, Eye, Edit, Phone, Mail, Car } from "lucide-react"
+import { Plus, Search, Filter, Eye, Edit, Phone, Mail, Car, Wrench } from "lucide-react"
 import { CustomerForm } from "../components/customer-form"
 import { CustomerDetails } from "../components/customer-details"
 
