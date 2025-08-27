@@ -8,7 +8,7 @@ import { Textarea } from "./ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Checkbox } from "./ui/checkbox"
 import { Badge } from "./ui/badge"
-import { Plus, Trash2, ArrowLeft, ArrowRight, Save, User, Car, Wrench, FileText, Search } from "lucide-react"
+import { Plus, Trash2, ArrowLeft, ArrowRight, Save, User, Car, Wrench, FileText } from "lucide-react"
 
 interface MultiStepCustomerFormProps {
   onClose: () => void
@@ -20,17 +20,14 @@ interface Vehicle {
   plate_number: string
   make: string
   model: string
-  year: string
-  color: string
   vehicle_type: string
 }
 
 interface TireService {
-  tire_size: string
-  tire_brand: string
+  item_name: string
+  brand: string
   quantity: number
   tire_type: string
-  price_per_tire: number
 }
 
 interface CarService {
@@ -51,9 +48,6 @@ interface InquiryDetails {
 export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCustomerFormProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [savedCustomerId, setSavedCustomerId] = useState<string | null>(null)
-  const [showExistingCustomerSearch, setShowExistingCustomerSearch] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedExistingCustomer, setSelectedExistingCustomer] = useState<any>(null)
 
   const [customerData, setCustomerData] = useState({
     name: customer?.name || "",
@@ -81,19 +75,16 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
       plate_number: "",
       make: "",
       model: "",
-      year: "",
-      color: "",
       vehicle_type: "",
     },
   ])
 
   // Service Details
   const [tireService, setTireService] = useState<TireService>({
-    tire_size: "",
-    tire_brand: "",
+    item_name: "",
+    brand: "",
     quantity: 1,
     tire_type: "",
-    price_per_tire: 0,
   })
 
   const [carService, setCarService] = useState<CarService>({
@@ -118,34 +109,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
     { id: 4, title: "Details & Review", icon: FileText },
   ]
 
-  const existingCustomers = [
-    { id: 1, name: "John Doe", phone: "+255 123 456 789", customer_type: "personal", last_visit: "2024-01-15" },
-    { id: 2, name: "ABC Company Ltd", phone: "+255 987 654 321", customer_type: "private", last_visit: "2024-01-10" },
-    {
-      id: 3,
-      name: "Ministry of Health",
-      phone: "+255 555 123 456",
-      customer_type: "government",
-      last_visit: "2024-01-08",
-    },
-  ]
-
-  const filteredCustomers = existingCustomers.filter(
-    (customer) =>
-      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) || customer.phone.includes(searchQuery),
-  )
-
-  const selectExistingCustomer = (customer: any) => {
-    setSelectedExistingCustomer(customer)
-    setCustomerData({
-      name: customer.name,
-      phone: customer.phone,
-      email: customer.email || "",
-      address: customer.address || "",
-      notes: customer.notes || "",
-    })
-    setShowExistingCustomerSearch(false)
-  }
 
   const saveCurrentStep = () => {
     const stepData = {
@@ -191,8 +154,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         plate_number: "",
         make: "",
         model: "",
-        year: "",
-        color: "",
         vehicle_type: "",
       },
     ])
@@ -253,7 +214,7 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
       return
     }
 
-    if (serviceType === "tire_sales" && (!tireService.tire_size || !tireService.tire_brand)) {
+    if (serviceType === "tire_sales" && (!tireService.item_name || !tireService.brand)) {
       alert("Please fill in tire service details")
       return
     }
@@ -272,12 +233,15 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         is_owner: customerType === "personal" ? personalSubType === "owner" : undefined,
         personal_sub_type: customerType === "personal" ? personalSubType : undefined,
         vehicles: serviceType === "car_service" ? vehicles : [],
-        id: selectedExistingCustomer?.id || `CUST-${Date.now()}`,
-        customer_code: selectedExistingCustomer?.customer_code || `CUST${String(Date.now()).slice(-6)}`,
-        registration_date: selectedExistingCustomer?.registration_date || new Date().toISOString().split('T')[0],
+        id: `CUST-${Date.now()}`,
+        customer_code: `CUST${String(Date.now()).slice(-6)}`,
+        registration_date: new Date().toISOString().split('T')[0],
         is_active: true,
-        total_visits: selectedExistingCustomer?.total_visits || 0,
-        total_spent: selectedExistingCustomer?.total_spent || 0,
+        total_visits: 0,
+        total_spent: 0,
+        // Automatic time tracking - customer arrival
+        arrival_time: new Date().toISOString(),
+        current_visit_status: "arrived",
       },
       order: serviceIntent === "service" ? {
         id: `ORD-${Date.now()}`,
@@ -286,16 +250,27 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
         status: "created",
         priority: serviceType === "car_service" ? carService.priority : "normal",
         description: serviceType === "tire_sales"
-          ? `Tire Sales: ${tireService.quantity}x ${tireService.tire_brand} ${tireService.tire_size}`
+          ? `Tire Sales: ${tireService.quantity}x ${tireService.brand} ${tireService.item_name}`
           : serviceType === "car_service"
           ? `Car Service: ${carService.service_types.join(", ")}`
           : "General inquiry",
         estimated_completion: serviceType === "car_service"
           ? new Date(Date.now() + carService.estimated_duration * 60000).toISOString()
           : null,
-        total_amount: serviceType === "tire_sales" ? tireService.quantity * tireService.price_per_tire : 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
+        service_start_time: new Date().toISOString(),
+        service_details: {
+          service_type: serviceType,
+          items: serviceType === "tire_sales" ? [tireService.item_name] : carService.service_types,
+          brand: serviceType === "tire_sales" ? tireService.brand : undefined,
+          quantity: serviceType === "tire_sales" ? tireService.quantity : undefined,
+          vehicle_info: serviceType === "car_service" && vehicles.length > 0 ? {
+            plate_number: vehicles[0].plate_number,
+            make: vehicles[0].make,
+            model: vehicles[0].model
+          } : undefined
+        }
       } : null,
       service_details: {
         service_intent: serviceIntent,
@@ -338,94 +313,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
       case 1:
         return (
           <div className="space-y-8 px-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Customer Selection</CardTitle>
-                <CardDescription>Search for existing customer or create new</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setShowExistingCustomerSearch(!showExistingCustomerSearch)}
-                    className="flex-1"
-                  >
-                    <Search className="h-4 w-4 mr-2" />
-                    Search Existing Customer
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setSelectedExistingCustomer(null)
-                      setCustomerData({
-                        name: "",
-                        phone: "",
-                        email: "",
-                        address: "",
-                        notes: "",
-                      })
-                    }}
-                    className="flex-1"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create New Customer
-                  </Button>
-                </div>
-
-                {showExistingCustomerSearch && (
-                  <div className="border rounded-lg p-4 space-y-4">
-                    <div>
-                      <Label>Search by name or phone</Label>
-                      <Input
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Enter customer name or phone number..."
-                      />
-                    </div>
-
-                    {searchQuery && (
-                      <div className="max-h-48 overflow-y-auto space-y-2">
-                        {filteredCustomers.map((customer) => (
-                          <div
-                            key={customer.id}
-                            className="p-3 border rounded cursor-pointer hover:bg-muted"
-                            onClick={() => selectExistingCustomer(customer)}
-                          >
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-medium">{customer.name}</p>
-                                <p className="text-sm text-muted-foreground">{customer.phone}</p>
-                                <Badge variant="secondary" className="text-xs mt-1">
-                                  {customer.customer_type}
-                                </Badge>
-                              </div>
-                              <p className="text-xs text-muted-foreground">Last visit: {customer.last_visit}</p>
-                            </div>
-                          </div>
-                        ))}
-                        {filteredCustomers.length === 0 && (
-                          <p className="text-center text-muted-foreground py-4">
-                            No customers found matching "{searchQuery}"
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {selectedExistingCustomer && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <p className="text-sm font-medium text-green-800">Selected: {selectedExistingCustomer.name}</p>
-                    <p className="text-xs text-green-600">
-                      You can proceed to service selection or modify customer details below.
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
             <Card>
               <CardHeader>
                 <CardTitle>Basic Customer Information</CardTitle>
@@ -623,70 +510,72 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
           <div className="space-y-6">
             {serviceIntent === "service" && (
               <>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Customer Type</CardTitle>
-                    <CardDescription>This helps us provide better service</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label>Customer Type</Label>
-                      <Select value={customerType} onValueChange={setCustomerType}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select customer type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="government">Government</SelectItem>
-                          <SelectItem value="ngo">NGO</SelectItem>
-                          <SelectItem value="private">Private Company</SelectItem>
-                          <SelectItem value="personal">Personal</SelectItem>
-                          <SelectItem value="bodaboda">Bodaboda</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Business fields for organizational customers */}
-                    {(customerType === "government" || customerType === "ngo" || customerType === "private") && (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label>Organization Name</Label>
-                          <Input
-                            value={businessInfo.business_name}
-                            onChange={(e) => setBusinessInfo({ ...businessInfo, business_name: e.target.value })}
-                            placeholder="Enter organization name"
-                          />
-                        </div>
-                        <div>
-                          <Label>Tax Number</Label>
-                          <Input
-                            value={businessInfo.tax_number}
-                            onChange={(e) => setBusinessInfo({ ...businessInfo, tax_number: e.target.value })}
-                            placeholder="Enter tax number"
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Sub-type selection for personal customers */}
-                    {customerType === "personal" && (
+                {serviceType === "car_service" && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Customer Type</CardTitle>
+                      <CardDescription>This helps us provide better service</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
                       <div>
-                        <Label>Customer Sub-Type</Label>
-                        <Select value={personalSubType} onValueChange={setPersonalSubType}>
+                        <Label>Customer Type</Label>
+                        <Select value={customerType} onValueChange={setCustomerType}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select if you are the owner or driver" />
+                            <SelectValue placeholder="Select customer type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="owner">Owner</SelectItem>
-                            <SelectItem value="driver">Driver</SelectItem>
+                            <SelectItem value="government">Government</SelectItem>
+                            <SelectItem value="ngo">NGO</SelectItem>
+                            <SelectItem value="private">Private Company</SelectItem>
+                            <SelectItem value="personal">Personal</SelectItem>
+                            <SelectItem value="bodaboda">Bodaboda</SelectItem>
                           </SelectContent>
                         </Select>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {personalSubType === "owner" ? "You own the vehicle being serviced" : personalSubType === "driver" ? "You drive but don't own the vehicle" : "Please select your relationship to the vehicle"}
-                        </p>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
+
+                      {/* Business fields for organizational customers */}
+                      {(customerType === "government" || customerType === "ngo" || customerType === "private") && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <Label>Organization Name</Label>
+                            <Input
+                              value={businessInfo.business_name}
+                              onChange={(e) => setBusinessInfo({ ...businessInfo, business_name: e.target.value })}
+                              placeholder="Enter organization name"
+                            />
+                          </div>
+                          <div>
+                            <Label>Tax Number</Label>
+                            <Input
+                              value={businessInfo.tax_number}
+                              onChange={(e) => setBusinessInfo({ ...businessInfo, tax_number: e.target.value })}
+                              placeholder="Enter tax number"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Sub-type selection for personal customers */}
+                      {customerType === "personal" && (
+                        <div>
+                          <Label>Customer Sub-Type</Label>
+                          <Select value={personalSubType} onValueChange={setPersonalSubType}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select if you are the owner or driver" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="owner">Owner</SelectItem>
+                              <SelectItem value="driver">Driver</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {personalSubType === "owner" ? "You own the vehicle being serviced" : personalSubType === "driver" ? "You drive but don't own the vehicle" : "Please select your relationship to the vehicle"}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Vehicle information for car services */}
                 {serviceType === "car_service" && (
@@ -743,23 +632,7 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <Label>Year</Label>
-                              <Input
-                                value={vehicle.year}
-                                onChange={(e) => handleVehicleChange(index, "year", e.target.value)}
-                                placeholder="2020"
-                              />
-                            </div>
-                            <div>
-                              <Label>Color</Label>
-                              <Input
-                                value={vehicle.color}
-                                onChange={(e) => handleVehicleChange(index, "color", e.target.value)}
-                                placeholder="White"
-                              />
-                            </div>
+                          <div className="grid grid-cols-1 gap-4">
                             <div>
                               <Label>Vehicle Type</Label>
                               <Select
@@ -794,20 +667,47 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label>Tire Size *</Label>
-                          <Input
-                            value={tireService.tire_size}
-                            onChange={(e) => handleTireServiceChange("tire_size", e.target.value)}
-                            placeholder="e.g., 205/55R16"
-                          />
+                          <Label>Item Name *</Label>
+                          <Select
+                            value={tireService.item_name}
+                            onValueChange={(value) => handleTireServiceChange("item_name", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select tire item" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="All-Season Tire">All-Season Tire</SelectItem>
+                              <SelectItem value="Summer Tire">Summer Tire</SelectItem>
+                              <SelectItem value="Winter Tire">Winter Tire</SelectItem>
+                              <SelectItem value="Performance Tire">Performance Tire</SelectItem>
+                              <SelectItem value="Off-Road Tire">Off-Road Tire</SelectItem>
+                              <SelectItem value="Eco Tire">Eco Tire</SelectItem>
+                              <SelectItem value="Run-Flat Tire">Run-Flat Tire</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                         <div>
-                          <Label>Tire Brand *</Label>
-                          <Input
-                            value={tireService.tire_brand}
-                            onChange={(e) => handleTireServiceChange("tire_brand", e.target.value)}
-                            placeholder="e.g., Michelin, Pirelli"
-                          />
+                          <Label>Brand *</Label>
+                          <Select
+                            value={tireService.brand}
+                            onValueChange={(value) => handleTireServiceChange("brand", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select brand" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Michelin">Michelin</SelectItem>
+                              <SelectItem value="Bridgestone">Bridgestone</SelectItem>
+                              <SelectItem value="Continental">Continental</SelectItem>
+                              <SelectItem value="Pirelli">Pirelli</SelectItem>
+                              <SelectItem value="Goodyear">Goodyear</SelectItem>
+                              <SelectItem value="Dunlop">Dunlop</SelectItem>
+                              <SelectItem value="Yokohama">Yokohama</SelectItem>
+                              <SelectItem value="Hankook">Hankook</SelectItem>
+                              <SelectItem value="Toyo">Toyo</SelectItem>
+                              <SelectItem value="Kumho">Kumho</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -836,15 +736,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                             </SelectContent>
                           </Select>
                         </div>
-                      </div>
-                      <div>
-                        <Label>Price per Tire</Label>
-                        <Input
-                          type="number"
-                          value={tireService.price_per_tire}
-                          onChange={(e) => handleTireServiceChange("price_per_tire", parseFloat(e.target.value))}
-                          placeholder="0.00"
-                        />
                       </div>
                     </CardContent>
                   </Card>
@@ -891,34 +782,6 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                             </div>
                           ))}
                         </div>
-                      </div>
-
-                      <div>
-                        <Label>Vehicle to Service</Label>
-                        {vehicles.length > 0 ? (
-                          <Select
-                            value={carService.vehicle_id || ""}
-                            onValueChange={(value) => handleCarServiceChange("vehicle_id", value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a vehicle" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {vehicles.map((vehicle, index) => (
-                                <SelectItem 
-                                  key={index} 
-                                  value={vehicle.plate_number || `vehicle-${index}`}
-                                >
-                                  {vehicle.plate_number} ({vehicle.make} {vehicle.model})
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">
-                            Please add a vehicle first
-                          </p>
-                        )}
                       </div>
 
                       <div>
@@ -1039,12 +902,11 @@ export function MultiStepCustomerForm({ onClose, onSave, customer }: MultiStepCu
                               <p className="font-medium">Tire Details:</p>
                               <ul className="list-disc list-inside ml-4">
                                 <li>
-                                  Size: {tireService.tire_size}, Brand: {tireService.tire_brand}
+                                  Item: {tireService.item_name}, Brand: {tireService.brand}
                                 </li>
                                 <li>
                                   Quantity: {tireService.quantity}, Type: {tireService.tire_type}
                                 </li>
-                                <li>Price/Tire: ${tireService.price_per_tire}</li>
                               </ul>
                             </div>
                           )}

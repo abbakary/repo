@@ -36,9 +36,6 @@ export function OrderUpdateForm({ order, onClose, onUpdate, userRole = "user" }:
   const [priority, setPriority] = useState(order.priority)
   const [assignedTo, setAssignedTo] = useState(order.assigned_to?.toString() || "")
   const [description, setDescription] = useState(order.description || "")
-  const [totalAmount, setTotalAmount] = useState(order.total_amount.toString())
-  const [discountAmount, setDiscountAmount] = useState(order.discount_amount.toString())
-  const [taxAmount, setTaxAmount] = useState(order.tax_amount.toString())
   const [managerNotes, setManagerNotes] = useState("")
   const [activeTab, setActiveTab] = useState("order_details")
   const [showAttachments, setShowAttachments] = useState(false)
@@ -64,12 +61,6 @@ export function OrderUpdateForm({ order, onClose, onUpdate, userRole = "user" }:
     setTechnicalUpdate(prev => ({ ...prev, [field]: value }))
   }
 
-  const calculateFinalAmount = () => {
-    const total = parseFloat(totalAmount) || 0
-    const discount = parseFloat(discountAmount) || 0
-    const tax = parseFloat(taxAmount) || 0
-    return total - discount + tax
-  }
 
   const handleSave = () => {
     const updatedOrder: Order = {
@@ -78,10 +69,6 @@ export function OrderUpdateForm({ order, onClose, onUpdate, userRole = "user" }:
       priority: priority as Order["priority"],
       assigned_to: assignedTo ? parseInt(assignedTo) : undefined,
       description,
-      total_amount: parseFloat(totalAmount) || 0,
-      discount_amount: parseFloat(discountAmount) || 0,
-      tax_amount: parseFloat(taxAmount) || 0,
-      final_amount: calculateFinalAmount(),
       updated_at: new Date().toISOString(),
       // Set completion time if status is completed
       actual_completion: status === "completed" ? new Date().toISOString() : order.actual_completion,
@@ -246,51 +233,6 @@ export function OrderUpdateForm({ order, onClose, onUpdate, userRole = "user" }:
               </CardContent>
             </Card>
 
-            {/* Financial Details */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Financial Details</CardTitle>
-                <CardDescription>Update pricing and amounts</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>Total Amount (TSH)</Label>
-                    <Input
-                      type="number"
-                      value={totalAmount}
-                      onChange={(e) => setTotalAmount(e.target.value)}
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label>Discount Amount (TSH)</Label>
-                    <Input
-                      type="number"
-                      value={discountAmount}
-                      onChange={(e) => setDiscountAmount(e.target.value)}
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>Tax Amount (TSH)</Label>
-                    <Input
-                      type="number"
-                      value={taxAmount}
-                      onChange={(e) => setTaxAmount(e.target.value)}
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label>Final Amount (TSH)</Label>
-                    <Input value={calculateFinalAmount().toLocaleString()} disabled />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Column - Service Specific Updates */}

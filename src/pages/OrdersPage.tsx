@@ -30,10 +30,6 @@ const mockOrders: Order[] = [
     priority: "normal",
     description: "Car service - Oil change and brake inspection",
     estimated_completion: "2024-01-20T16:00:00",
-    total_amount: 85000,
-    discount_amount: 0,
-    tax_amount: 15300,
-    final_amount: 100300,
     created_by: 1,
     assigned_to: 2,
     created_at: "2024-01-20T08:30:00",
@@ -48,10 +44,6 @@ const mockOrders: Order[] = [
     priority: "high",
     description: "Tire sales - 4 Michelin tires 205/55R16",
     estimated_completion: "2024-01-20T14:00:00",
-    total_amount: 320000,
-    discount_amount: 20000,
-    tax_amount: 54000,
-    final_amount: 354000,
     created_by: 1,
     created_at: "2024-01-20T09:00:00",
     updated_at: "2024-01-20T09:00:00",
@@ -65,10 +57,6 @@ const mockOrders: Order[] = [
     priority: "low",
     description: "Inquiry about transmission service pricing",
     actual_completion: "2024-01-19T15:30:00",
-    total_amount: 0,
-    discount_amount: 0,
-    tax_amount: 0,
-    final_amount: 0,
     created_by: 1,
     created_at: "2024-01-19T14:00:00",
     updated_at: "2024-01-19T15:30:00",
@@ -164,10 +152,10 @@ export default function OrdersPage() {
       order.id === updatedOrder.id ? updatedOrder : order
     ))
     
-    // If order is completed, trigger job card and invoice generation
-    if (updatedOrder.status === "completed" && selectedOrder?.status !== "completed") {
-      generateJobCardAndInvoice(updatedOrder)
-    }
+    // Job card and invoice generation temporarily disabled
+    // if (updatedOrder.status === "completed" && selectedOrder?.status !== "completed") {
+    //   generateJobCardAndInvoice(updatedOrder)
+    // }
     
     setShowOrderUpdate(false)
     setSelectedOrder(null)
@@ -198,28 +186,15 @@ export default function OrdersPage() {
         updated_at: new Date().toISOString(),
       }
 
-      // Generate Invoice with enhanced details
+      // Generate Invoice (simplified without financial details)
       const invoice = {
         id: timestamp + 1,
         invoice_number: invoiceNumber,
         job_card_id: jobCard.id,
-        order_id: order.id,
         customer_id: order.customer_id,
         status: "draft",
-        invoice_type: order.order_type,
-        subtotal: order.total_amount,
-        tax_rate: 18.0,
-        tax_amount: order.tax_amount,
-        discount_amount: order.discount_amount,
-        total_amount: order.final_amount,
-        paid_amount: 0,
-        balance_due: order.final_amount,
         invoice_date: new Date().toISOString().split('T')[0],
         due_date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        payment_terms: "Net 15 days",
-        payment_method: null,
-        payment_reference: null,
-        notes: `Generated from Order: ${order.order_number}`,
         generated_by: 1,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -246,11 +221,9 @@ export default function OrdersPage() {
 • Priority: ${order.priority.toUpperCase()}
 • Estimated Duration: ${jobCard.estimated_duration} minutes
 
-🧾 Invoice Generated:
+🧾 Document Generated:
 • Number: ${invoice.invoice_number}
-• Total Amount: TSH ${order.final_amount.toLocaleString()}
 • Due Date: ${invoice.due_date}
-• Payment Terms: Net 15 days
 
 🚀 Next Steps:
 • Job card is ready for technician assignment
@@ -455,7 +428,6 @@ Error details: ${error instanceof Error ? error.message : 'Unknown error'}`)
                             <TableHead className="w-[10%]">Status</TableHead>
                             <TableHead className="w-[8%] hidden lg:table-cell">Priority</TableHead>
                             <TableHead className="w-[10%] hidden md:table-cell">Time</TableHead>
-                            <TableHead className="w-[12%] hidden lg:table-cell">Amount</TableHead>
                             <TableHead className="w-[15%]">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -506,9 +478,6 @@ Error details: ${error instanceof Error ? error.message : 'Unknown error'}`)
                                     }
                                   </span>
                                 </div>
-                              </TableCell>
-                              <TableCell className="hidden lg:table-cell">
-                                <div className="text-sm">TSH {order.final_amount.toLocaleString()}</div>
                               </TableCell>
                               <TableCell>
                                 <div className="flex gap-2">
