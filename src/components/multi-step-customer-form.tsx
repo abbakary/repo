@@ -8,7 +8,7 @@ import { Textarea } from "./ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Checkbox } from "./ui/checkbox"
 import { Badge } from "./ui/badge"
-import { Plus, Trash2, ArrowLeft, ArrowRight, Save, User, Car, Wrench, FileText, Search } from "lucide-react"
+import { Plus, Trash2, ArrowLeft, ArrowRight, Save, User, Car, Wrench, FileText } from "lucide-react"
 
 interface MultiStepCustomerFormProps {
   onClose: () => void
